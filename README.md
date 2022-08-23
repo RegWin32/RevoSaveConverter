@@ -6,6 +6,7 @@ Build using make🏗️:
 ```
 git clone https://github.com/RegWin32/RevoSaveConverter.git && \
 cd RevoSaveConverter && \
+cmake . && \
 make 
 ```
 Build using Ninja🐱‍👤:
