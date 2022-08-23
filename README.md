@@ -6,7 +6,6 @@ How to build🏗️:
 ```
 git clone https://github.com/RegWin32/RevoSaveConverter.git && \
 cd RevoSaveConverter && \
-cmake . && \
 make 
 ```
 
