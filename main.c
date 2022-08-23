@@ -2,18 +2,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <ctype.h>
 
 
-#define SWAP_UINT16(x) (((x) >> 8) | ((x) << 8))
-#define STRING_MATCH 0
-#define SWAP_UINT32(x) (((x) >> 24) | (((x) & 0x00FF0000) >> 8) | (((x) & 0x0000FF00) << 8) | ((x) << 24))
-#define clear() printf("\033[H\033[J")
-
-#define NOT_IMPLEMENTED 501
-#define REVO_SAVE_SIZE 139264
-#define GBA_MAX_SAVE_SIZE 131072
+#define SWAP_UINT16(n) (((n&0xFF00)>>8)|((n&0x00FF)<<8))
 const int16_t DEAD_VALUE = SWAP_UINT16(0xDEAD);
+
+#define STRING_MATCH            0
+#define UINT_LEAST8_MAX        255
+
+#define REVO_SAVE_SIZE         139264
+#define GBA_SAVE_SIZE_MAX      131072
 
 
 long fsize(FILE *fp) {
@@ -27,8 +25,9 @@ long fsize(FILE *fp) {
 
 int main(int argc, char *argv[]) {
     FILE *pFile;
-    char fileNameTrimmed[256];
-    char newFileName[256];
+    char fileNameTrimmed[UINT_LEAST8_MAX];
+    char newFileName[UINT_LEAST8_MAX];
+
 
     if (argc > 2 && strcmp(argv[1], "help") != STRING_MATCH)
     {
@@ -52,13 +51,15 @@ int main(int argc, char *argv[]) {
             {
                  if (fsize(pFile) == REVO_SAVE_SIZE)
                  {
-                    snprintf(newFileName, sizeof(newFileName), "%s.sav", fileNameTrimmed);
+                    snprintf(newFileName,
+                             sizeof(newFileName)+sizeof(".sav"), "%s.sav", fileNameTrimmed);
+
                     FILE *pNewFile = fopen(newFileName, "a+");
                     char cTemp;
 
                     while (fread(&cTemp, 1, 1, pFile) == 1)
                     {
-                        if (fsize(pNewFile) < GBA_MAX_SAVE_SIZE)
+                        if (fsize(pNewFile) < GBA_SAVE_SIZE_MAX)
                             fwrite(&cTemp, 1, 1, pNewFile);
                     }
                     fclose(pFile);
@@ -75,7 +76,9 @@ int main(int argc, char *argv[]) {
                 }
                 fclose(pFile);
 
-                snprintf(newFileName, sizeof(newFileName), "%s.gba.sav", fileNameTrimmed);
+                snprintf(newFileName,
+                         sizeof(newFileName)+sizeof(".gba.sav"), "%s.gba.sav", fileNameTrimmed);
+
                 rename(fileArgument, newFileName);
 
                 return EXIT_SUCCESS;
