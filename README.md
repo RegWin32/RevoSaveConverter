@@ -1,12 +1,20 @@
 # RevoSaveConverter
 Revo K101 Plus savefile converter for Gameboy Advance
 
-How to build🏗️:
+Build using make🏗️:
 
 ```
 git clone https://github.com/RegWin32/RevoSaveConverter.git && \
 cd RevoSaveConverter && \
 make 
+```
+Build using Ninja🐱‍👤:
+```
+git clone https://github.com/RegWin32/RevoSaveConverter.git && \
+cd RevoSaveConverter && \
+cmake -Bbuild -H. -G Ninja && \
+cd build && \
+ninja
 ```
 
 Usage💡:
