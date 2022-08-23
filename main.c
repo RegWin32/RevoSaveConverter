@@ -57,11 +57,9 @@ int main(int argc, char *argv[]) {
                     FILE *pNewFile = fopen(newFileName, "a+");
                     char cTemp;
 
-                    while (fread(&cTemp, 1, 1, pFile) == 1)
-                    {
-                        if (fsize(pNewFile) < GBA_SAVE_SIZE_MAX)
+                    while (fread(&cTemp, 1, 1, pFile) == 1 && fsize(pNewFile) < GBA_SAVE_SIZE_MAX)
                             fwrite(&cTemp, 1, 1, pNewFile);
-                    }
+                    
                     fclose(pFile);
                     fclose(pNewFile);
                     remove(fileArgument);
